@@ -4,191 +4,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>اپلیکیشن پیدا - Peyda</title>
-    <!-- فونت وزیرمتن -->
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
-    <!-- آیکون‌های FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
-        :root {
-            --primary: #FF6B00;
-            --primary-light: #FFF0E5;
-            --dark: #2D3436;
-            --gray: #636E72;
-            --light-gray: #F5F6FA;
-            --white: #FFFFFF;
-            --border: #DFE6E9;
-            --shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-
+        :root { --primary: #FF6B00; --primary-light: #FFF0E5; --dark: #2D3436; --gray: #636E72; --light-gray: #F5F6FA; --white: #FFFFFF; --border: #DFE6E9; }
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
-        
-        body {
-            font-family: 'Vazirmatn', sans-serif;
-            background-color: #eef1f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            color: var(--dark);
-        }
-
-        /* قاب موبایل */
-        .mobile-frame {
-            width: 375px;
-            height: 812px;
-            background: var(--white);
-            border-radius: 40px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-            position: relative;
-            overflow: hidden;
-            border: 8px solid #1a1a1a;
-        }
-
-        .notch {
-            position: absolute;
-            top: 0; left: 50%; transform: translateX(-50%);
-            width: 150px; height: 25px;
-            background: #1a1a1a;
-            border-bottom-left-radius: 15px;
-            border-bottom-right-radius: 15px;
-            z-index: 100;
-        }
-
-        /* صفحات */
-        .screen {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--white);
-            display: none;
-            flex-direction: column;
-            overflow-y: auto;
-            padding-top: 30px;
-            padding-bottom: 80px;
-        }
+        body { font-family: 'Vazirmatn', sans-serif; background-color: #eef1f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; color: var(--dark); }
+        .mobile-frame { width: 375px; height: 812px; background: var(--white); border-radius: 40px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); position: relative; overflow: hidden; border: 8px solid #1a1a1a; }
+        .notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 150px; height: 25px; background: #1a1a1a; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px; z-index: 100; }
+        .screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--white); display: none; flex-direction: column; overflow-y: auto; padding-top: 30px; padding-bottom: 80px; }
         .screen.active { display: flex; }
-
-        /* --- صفحه اصلی --- */
+        
+        /* Home */
         .header { padding: 20px; }
         .logo-area { text-align: center; margin-bottom: 20px; }
-        .logo-area h1 { font-size: 24px; font-weight: 800; color: var(--dark); }
-        .logo-area span { font-size: 14px; color: var(--gray); }
-
-        .search-bar {
-            background: var(--light-gray);
-            border-radius: 12px;
-            padding: 12px 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin: 0 20px 25px;
-            cursor: pointer;
-        }
-        .search-bar i { color: var(--primary); font-size: 18px; }
-        .search-bar input { border: none; background: transparent; width: 100%; font-family: inherit; font-size: 14px; }
-
-        .categories-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            padding: 0 20px;
-        }
-        .cat-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
+        .logo-area h1 { font-size: 24px; font-weight: 800; }
+        .search-bar { background: var(--light-gray); border-radius: 12px; padding: 12px 15px; display: flex; align-items: center; gap: 10px; margin: 0 20px 25px; cursor: pointer; }
+        .search-bar i { color: var(--primary); }
+        .categories-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; padding: 0 20px; }
+        .cat-item { display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; transition: transform 0.2s; }
         .cat-item:hover { transform: translateY(-3px); }
-        .cat-icon {
-            width: 55px; height: 55px;
-            background: var(--primary-light);
-            border-radius: 16px;
-            display: flex; align-items: center; justify-content: center;
-            color: var(--primary); font-size: 24px;
-        }
+        .cat-icon { width: 55px; height: 55px; background: var(--primary-light); border-radius: 16px; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 24px; }
         .cat-label { font-size: 13px; font-weight: 500; }
 
-        /* --- صفحه جزئیات آگهی --- */
-        .ad-gallery {
-            width: 100%; height: 280px;
-            background: #ddd url('https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=600&q=80') center/cover;
-            position: relative;
-        }
-        .gallery-counter {
-            position: absolute; bottom: 15px; left: 15px;
-            background: rgba(0,0,0,0.6); color: white;
-            padding: 4px 10px; border-radius: 20px; font-size: 12px;
-        }
+        /* Detail */
+        .ad-gallery { width: 100%; height: 280px; background: #ddd url('https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=600&q=80') center/cover; position: relative; }
+        .gallery-counter { position: absolute; bottom: 15px; left: 15px; background: rgba(0,0,0,0.6); color: white; padding: 4px 10px; border-radius: 20px; font-size: 12px; }
         .ad-header { padding: 20px; display: flex; justify-content: space-between; align-items: center; }
-        .back-btn { cursor: pointer; font-size: 20px; color: var(--dark); }
-        .fav-btn { cursor: pointer; font-size: 22px; color: var(--gray); }
-        
+        .back-btn { cursor: pointer; font-size: 20px; }
         .ad-info { padding: 0 20px; }
         .ad-price { font-size: 22px; font-weight: 800; color: var(--primary); margin-bottom: 5px; }
         .ad-meta { font-size: 13px; color: var(--gray); display: flex; gap: 15px; margin-bottom: 20px; }
-        
-        .specs-table {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
-            background: var(--border); border: 1px solid var(--border);
-            border-radius: 12px; overflow: hidden; margin: 0 20px 20px;
-        }
-        .spec-cell {
-            background: var(--white); padding: 12px 15px;
-            display: flex; flex-direction: column; gap: 4px;
-        }
+        .specs-table { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin: 0 20px 20px; }
+        .spec-cell { background: var(--white); padding: 12px 15px; display: flex; flex-direction: column; gap: 4px; }
         .spec-label { font-size: 11px; color: var(--gray); }
         .spec-value { font-size: 14px; font-weight: 600; }
-
-        .seller-card {
-            margin: 0 20px; padding: 15px;
-            background: var(--light-gray); border-radius: 12px;
-            display: flex; align-items: center; gap: 12px;
-        }
+        .seller-card { margin: 0 20px; padding: 15px; background: var(--light-gray); border-radius: 12px; display: flex; align-items: center; gap: 12px; }
         .seller-avatar { width: 45px; height: 45px; background: #ddd; border-radius: 50%; }
-        
-        .sticky-bottom {
-            position: absolute; bottom: 0; left: 0; width: 100%;
-            background: var(--white); padding: 15px 20px;
-            box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
-            display: flex; gap: 10px; align-items: center;
-        }
+        .sticky-bottom { position: absolute; bottom: 0; left: 0; width: 100%; background: var(--white); padding: 15px 20px; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); display: flex; gap: 10px; align-items: center; }
         .btn-chat { flex: 2; background: var(--primary); color: white; border: none; padding: 14px; border-radius: 12px; font-family: inherit; font-weight: 700; font-size: 15px; cursor: pointer; }
         .btn-call { flex: 1; background: var(--white); color: var(--dark); border: 1px solid var(--border); padding: 14px; border-radius: 12px; font-family: inherit; font-weight: 600; cursor: pointer; }
 
-        /* --- صفحه ثبت آگهی --- */
+        /* Form */
         .form-header { padding: 20px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid var(--border); }
         .progress-bar { flex: 1; height: 6px; background: var(--light-gray); border-radius: 3px; overflow: hidden; }
         .progress-fill { width: 50%; height: 100%; background: var(--primary); }
-        
         .form-body { padding: 20px; }
         .form-group { margin-bottom: 20px; }
-        .form-label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--dark); }
-        .form-input {
-            width: 100%; padding: 14px; border: 1px solid var(--border);
-            border-radius: 12px; font-family: inherit; font-size: 14px;
-            background: var(--white); transition: 0.3s;
-        }
-        .form-input:focus { border-color: var(--primary); }
-        
+        .form-label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+        .form-input { width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 12px; font-family: inherit; font-size: 14px; background: var(--white); }
         .radio-group { display: flex; gap: 10px; }
-        .radio-option {
-            flex: 1; padding: 12px; border: 1px solid var(--border);
-            border-radius: 10px; text-align: center; font-size: 14px; cursor: pointer;
-        }
+        .radio-option { flex: 1; padding: 12px; border: 1px solid var(--border); border-radius: 10px; text-align: center; font-size: 14px; cursor: pointer; }
         .radio-option.selected { background: var(--primary-light); border-color: var(--primary); color: var(--primary); font-weight: 600; }
-
         .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 10px; }
         .photo-slot { aspect-ratio: 1; border: 2px dashed var(--border); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--gray); cursor: pointer; }
         .photo-slot.filled { border-style: solid; background: #eee; position: relative; }
         .photo-slot.filled::after { content: '×'; position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.5); color: white; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; }
-
         .btn-next { width: 100%; background: var(--primary); color: white; border: none; padding: 16px; border-radius: 14px; font-family: inherit; font-weight: 700; font-size: 16px; cursor: pointer; margin-top: 10px; }
         .draft-link { display: block; text-align: center; margin-top: 15px; color: var(--gray); font-size: 13px; text-decoration: none; }
 
-        /* --- صفحه چت --- */
+        /* Chat */
         .chat-header { padding: 15px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
         .chat-messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; background: var(--light-gray); }
         .msg-sender { align-self: flex-start; max-width: 80%; }
@@ -197,13 +72,12 @@
         .msg-sender .bubble { background: white; border-radius: 16px 16px 16px 4px; }
         .msg-receiver .bubble { background: var(--primary); color: white; border-radius: 16px 16px 4px 16px; }
         .msg-time { font-size: 10px; color: var(--gray); margin-top: 4px; }
-        .msg-receiver .msg-time { text-align: left; }
         .chat-security { text-align: center; font-size: 11px; color: var(--gray); margin: 10px 0; }
         .chat-input-area { padding: 15px; background: white; border-top: 1px solid var(--border); display: flex; gap: 10px; align-items: center; }
         .chat-input { flex: 1; padding: 12px; border: 1px solid var(--border); border-radius: 25px; font-family: inherit; }
         .send-btn { width: 45px; height: 45px; background: var(--primary); color: white; border: none; border-radius: 50%; cursor: pointer; }
 
-        /* --- صفحه پروفایل --- */
+        /* Profile */
         .profile-header { padding: 30px 20px; text-align: center; background: linear-gradient(135deg, var(--primary), #ff9e42); color: white; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; }
         .profile-avatar { width: 80px; height: 80px; background: white; border-radius: 50%; margin: 0 auto 15px; border: 4px solid rgba(255,255,255,0.3); }
         .profile-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; margin-bottom: 10px; }
@@ -222,272 +96,97 @@
         .ad-price-sm { font-size: 12px; color: var(--primary); }
         .ad-status { font-size: 11px; color: var(--gray); margin-top: 4px; }
 
-        /* --- منوی پایین --- */
-        .bottom-nav {
-            position: absolute; bottom: 0; left: 0; width: 100%;
-            background: var(--white); border-top: 1px solid var(--border);
-            display: flex; justify-content: space-around; align-items: center;
-            padding: 12px 0 25px; z-index: 50;
-        }
+        /* Bottom Nav */
+        .bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; background: var(--white); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; padding: 12px 0 25px; z-index: 50; }
         .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--gray); font-size: 11px; cursor: pointer; }
         .nav-item i { font-size: 20px; }
         .nav-item.active { color: var(--primary); }
-        
-        .nav-add-btn {
-            width: 50px; height: 50px; background: var(--primary);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 24px; margin-top: -30px;
-            box-shadow: 0 5px 15px rgba(255, 107, 0, 0.4);
-            cursor: pointer; border: 4px solid var(--white);
-        }
-
+        .nav-add-btn { width: 50px; height: 50px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; margin-top: -30px; box-shadow: 0 5px 15px rgba(255, 107, 0, 0.4); cursor: pointer; border: 4px solid var(--white); }
         ::-webkit-scrollbar { width: 0px; background: transparent; }
     </style>
 </head>
 <body>
-
 <div class="mobile-frame">
     <div class="notch"></div>
-
-    <!-- ================= PAGE 1: HOME ================= -->
+    
+    <!-- HOME -->
     <div id="page-home" class="screen active">
         <div class="header">
-            <div class="logo-area">
-                <h1>Peyda</h1>
-                <span>تهران</span>
-            </div>
-            <div class="search-bar">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" placeholder="جستجو در میان آگهی‌ها..." readonly>
-            </div>
+            <div class="logo-area"><h1>Peyda</h1><span>تهران</span></div>
+            <div class="search-bar"><i class="fa-solid fa-magnifying-glass"></i><input type="text" placeholder="جستجو در میان آگهی‌ها..." readonly></div>
         </div>
-
         <div class="categories-grid">
-            <div class="cat-item" onclick="goToDetail()">
-                <div class="cat-icon"><i class="fa-solid fa-car"></i></div>
-                <span class="cat-label">خودرو</span>
-            </div>
-            <div class="cat-item">
-                <div class="cat-icon"><i class="fa-solid fa-house"></i></div>
-                <span class="cat-label">املاک</span>
-            </div>
-            <div class="cat-item">
-                <div class="cat-icon"><i class="fa-solid fa-mobile-screen"></i></div>
-                <span class="cat-label">الکترونیک</span>
-            </div>
-            <div class="cat-item">
-                <div class="cat-icon"><i class="fa-solid fa-couch"></i></div>
-                <span class="cat-label">مبلمان</span>
-            </div>
-            <div class="cat-item">
-                <div class="cat-icon"><i class="fa-solid fa-comments"></i></div>
-                <span class="cat-label">استخدام</span>
-            </div>
-            <div class="cat-item">
-                <div class="cat-icon"><i class="fa-solid fa-user-gear"></i></div>
-                <span class="cat-label">خدمات</span>
-            </div>
+            <div class="cat-item" onclick="goToDetail()"><div class="cat-icon"><i class="fa-solid fa-car"></i></div><span class="cat-label">خودرو</span></div>
+            <div class="cat-item"><div class="cat-icon"><i class="fa-solid fa-house"></i></div><span class="cat-label">املاک</span></div>
+            <div class="cat-item"><div class="cat-icon"><i class="fa-solid fa-mobile-screen"></i></div><span class="cat-label">الکترونیک</span></div>
+            <div class="cat-item"><div class="cat-icon"><i class="fa-solid fa-couch"></i></div><span class="cat-label">مبلمان</span></div>
+            <div class="cat-item"><div class="cat-icon"><i class="fa-solid fa-comments"></i></div><span class="cat-label">استخدام</span></div>
+            <div class="cat-item"><div class="cat-icon"><i class="fa-solid fa-user-gear"></i></div><span class="cat-label">خدمات</span></div>
         </div>
     </div>
 
-    <!-- ================= PAGE 2: AD DETAIL ================= -->
+    <!-- DETAIL -->
     <div id="page-detail" class="screen">
-        <div class="ad-gallery">
-            <div class="gallery-counter">1 / 6</div>
-        </div>
-        
-        <div class="ad-header">
-            <i class="fa-solid fa-arrow-right back-btn" onclick="goHome()"></i>
-            <i class="fa-regular fa-heart fav-btn"></i>
-        </div>
-
+        <div class="ad-gallery"><div class="gallery-counter">1 / 6</div></div>
+        <div class="ad-header"><i class="fa-solid fa-arrow-right back-btn" onclick="goHome()"></i><i class="fa-regular fa-heart fav-btn"></i></div>
         <div class="ad-info">
             <div class="ad-price">۵۰,۰۰۰,۰۰ تومان</div>
             <div style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">پژو 206 تیپ 5 مدل 98</div>
-            <div class="ad-meta">
-                <span><i class="fa-solid fa-location-dot"></i> تهران، سعادت‌آباد</span>
-                <span><i class="fa-regular fa-clock"></i> ۲ ساعت پیش</span>
-            </div>
+            <div class="ad-meta"><span><i class="fa-solid fa-location-dot"></i> تهران، سعادت‌آباد</span><span><i class="fa-regular fa-clock"></i> ۲ ساعت پیش</span></div>
         </div>
-
         <div class="specs-table">
-            <div class="spec-cell">
-                <span class="spec-label">کارکرد</span>
-                <span class="spec-value">۸۵,۰۰ کیلومتر</span>
-            </div>
-            <div class="spec-cell">
-                <span class="spec-label">سال ساخت</span>
-                <span class="spec-value">۱۳۹۸</span>
-            </div>
-            <div class="spec-cell">
-                <span class="spec-label">گیربکس</span>
-                <span class="spec-value">دستی</span>
-            </div>
-            <div class="spec-cell">
-                <span class="spec-label">رنگ</span>
-                <span class="spec-value">سفید</span>
-            </div>
+            <div class="spec-cell"><span class="spec-label">کارکرد</span><span class="spec-value">۸۵,۰۰ کیلومتر</span></div>
+            <div class="spec-cell"><span class="spec-label">سال ساخت</span><span class="spec-value">۱۳۹۸</span></div>
+            <div class="spec-cell"><span class="spec-label">گیربکس</span><span class="spec-value">دستی</span></div>
+            <div class="spec-cell"><span class="spec-label">رنگ</span><span class="spec-value">سفید</span></div>
         </div>
-
-        <div class="seller-card">
-            <div class="seller-avatar"></div>
-            <div>
-                <div style="font-weight: 700; font-size: 14px;">علی محمدی</div>
-                <div style="font-size: 12px; color: var(--gray);">عضویت از ۱۴۰۱ • ⭐ ۴.</div>
-            </div>
-        </div>
-
-        <div class="sticky-bottom">
-            <button class="btn-chat" onclick="showChat()"><i class="fa-solid fa-comment-dots"></i> چت در پیدا</button>
-            <button class="btn-call"><i class="fa-solid fa-phone"></i> تماس</button>
-        </div>
+        <div class="seller-card"><div class="seller-avatar"></div><div><div style="font-weight: 700; font-size: 14px;">علی محمدی</div><div style="font-size: 12px; color: var(--gray);">عضویت از ۱۴۰۱ • ⭐ ۴.</div></div></div>
+        <div class="sticky-bottom"><button class="btn-chat" onclick="showChat()"><i class="fa-solid fa-comment-dots"></i> چت در پیدا</button><button class="btn-call"><i class="fa-solid fa-phone"></i> تماس</button></div>
     </div>
 
-    <!-- ================= PAGE 3: POST AD FORM ================= -->
+    <!-- FORM -->
     <div id="page-form" class="screen">
-        <div class="form-header">
-            <i class="fa-solid fa-xmark back-btn" onclick="goHome()" style="font-size: 18px;"></i>
-            <div class="progress-bar"><div class="progress-fill"></div></div>
-            <span style="font-size: 12px; color: var(--gray);">مرحله  از ۴</span>
-        </div>
-
+        <div class="form-header"><i class="fa-solid fa-xmark back-btn" onclick="goHome()" style="font-size: 18px;"></i><div class="progress-bar"><div class="progress-fill"></div></div><span style="font-size: 12px; color: var(--gray);">مرحله  از ۴</span></div>
         <div class="form-body">
-            <div style="display:inline-block; background:var(--primary-light); color:var(--primary); padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600; margin-bottom:20px;">
-                خودرو > سواری
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">برند خودرو</label>
-                <select class="form-input">
-                    <option>انتخاب کنید...</option>
-                    <option selected>پژو</option>
-                    <option>پراید</option>
-                    <option>سمند</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">مدل</label>
-                <select class="form-input">
-                    <option>انتخاب کنید...</option>
-                    <option selected>206 تیپ 5</option>
-                    <option>206 تیپ 2</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">سال ساخت</label>
-                <input type="number" class="form-input" value="1398">
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">گیربکس</label>
-                <div class="radio-group">
-                    <div class="radio-option selected" onclick="selectRadio(this)">دستی</div>
-                    <div class="radio-option" onclick="selectRadio(this)">اتوماتیک</div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">افزودن تصاویر</label>
-                <div class="photo-grid">
-                    <div class="photo-slot filled"></div>
-                    <div class="photo-slot filled"></div>
-                    <div class="photo-slot"><i class="fa-solid fa-camera"></i></div>
-                </div>
-                <div style="font-size:11px; color:var(--gray);">عکس اول کاور آگهی شماست.</div>
-            </div>
-
-            <button class="btn-next">مرحله بعد: توضیحات</button>
-            <a href="#" class="draft-link">ذخیره به عنوان پیش‌نویس</a>
+            <div style="display:inline-block; background:var(--primary-light); color:var(--primary); padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600; margin-bottom:20px;">خودرو > سواری</div>
+            <div class="form-group"><label class="form-label">برند خودرو</label><select class="form-input"><option selected>پژو</option><option>پراید</option></select></div>
+            <div class="form-group"><label class="form-label">مدل</label><select class="form-input"><option selected>206 تیپ 5</option></select></div>
+            <div class="form-group"><label class="form-label">سال ساخت</label><input type="number" class="form-input" value="1398"></div>
+            <div class="form-group"><label class="form-label">گیربکس</label><div class="radio-group"><div class="radio-option selected" onclick="selectRadio(this)">دستی</div><div class="radio-option" onclick="selectRadio(this)">اتوماتیک</div></div></div>
+            <div class="form-group"><label class="form-label">افزودن تصاویر</label><div class="photo-grid"><div class="photo-slot filled"></div><div class="photo-slot filled"></div><div class="photo-slot"><i class="fa-solid fa-camera"></i></div></div><div style="font-size:11px; color:var(--gray);">عکس اول کاور آگهی شماست.</div></div>
+            <button class="btn-next">مرحله بعد: توضیحات</button><a href="#" class="draft-link">ذخیره به عنوان پیش‌نویس</a>
         </div>
     </div>
 
-    <!-- ================= PAGE 4: CHAT ================= -->
+    <!-- CHAT -->
     <div id="page-chat" class="screen">
-        <div class="chat-header">
-            <i class="fa-solid fa-arrow-right back-btn" onclick="goHome()"></i>
-            <div style="width: 40px; height: 40px; background: #ddd; border-radius: 50%;"></div>
-            <div>
-                <div style="font-weight: 700; font-size: 15px;">علی محمدی</div>
-                <div style="font-size: 11px; color: var(--primary);">آنلاین • پاسخگو در ۵ دقیقه</div>
-            </div>
-        </div>
-
+        <div class="chat-header"><i class="fa-solid fa-arrow-right back-btn" onclick="goHome()"></i><div style="width: 40px; height: 40px; background: #ddd; border-radius: 50%;"></div><div><div style="font-weight: 700; font-size: 15px;">علی محمدی</div><div style="font-size: 11px; color: var(--primary);">آنلاین • پاسخگو در ۵ دقیقه</div></div></div>
         <div class="chat-messages">
-            <div class="msg-sender">
-                <div class="bubble">سلام، وقت بخیر. بله خودرو موجوده و سالمه.</div>
-                <div class="msg-time">۱۰:۳۰ صبح</div>
-            </div>
-
-            <div class="msg-receiver">
-                <div class="bubble">سلام، ممنون. آیا امکان بازدید امروز عصر هست؟</div>
-                <div class="msg-time">۱۰:۳ صبح ✓✓</div>
-            </div>
-            
-            <div class="chat-security">
-                🔒 برای امنیت شما، شماره تماس تا زمان تایید معامله نمایش داده نمی‌شود.
-            </div>
+            <div class="msg-sender"><div class="bubble">سلام، وقت بخیر. بله خودرو موجوده و سالمه.</div><div class="msg-time">۱۰:۰ صبح</div></div>
+            <div class="msg-receiver"><div class="bubble">سلام، ممنون. آیا امکان بازدید امروز عصر هست؟</div><div class="msg-time">۱۰:۳ صبح ✓✓</div></div>
+            <div class="chat-security"> برای امنیت شما، شماره تماس تا زمان تایید معامله نمایش داده نمی‌شود.</div>
         </div>
-
-        <div class="chat-input-area">
-            <input type="text" class="chat-input" placeholder="پیام خود را بنویسید...">
-            <button class="send-btn"><i class="fa-solid fa-paper-plane"></i></button>
-        </div>
+        <div class="chat-input-area"><input type="text" class="chat-input" placeholder="پیام خود را بنویسید..."><button class="send-btn"><i class="fa-solid fa-paper-plane"></i></button></div>
     </div>
 
-    <!-- ================= PAGE 5: PROFILE ================= -->
+    <!-- PROFILE -->
     <div id="page-profile" class="screen">
-        <div class="profile-header">
-            <div class="profile-avatar"></div>
-            <h2 style="font-size: 20px; margin-bottom: 5px;">کاربر پیدا</h2>
-            <p style="font-size: 13px; opacity: 0.9;">عضویت از مرداد ۱۴۰۳</p>
-        </div>
-
+        <div class="profile-header"><div class="profile-avatar"></div><h2 style="font-size: 20px; margin-bottom: 5px;">کاربر پیدا</h2><p style="font-size: 13px; opacity: 0.9;">عضویت از مرداد ۱۴۰۳</p></div>
         <div class="profile-stats">
-            <div class="stat-card orange">
-                <div class="stat-num">۳</div>
-                <div class="stat-label">آگهی فعال</div>
-            </div>
-            <div class="stat-card blue">
-                <div class="stat-num">۱۲</div>
-                <div class="stat-label">ذخیره شده</div>
-            </div>
+            <div class="stat-card orange"><div class="stat-num">۳</div><div class="stat-label">آگهی فعال</div></div>
+            <div class="stat-card blue"><div class="stat-num">۱۲</div><div class="stat-label">ذخیره شده</div></div>
         </div>
-
         <h3 class="section-title">آگهی‌های من</h3>
-        <div class="ad-list-item">
-            <div class="ad-thumb"></div>
-            <div class="ad-details">
-                <div class="ad-title">پژو 206 تیپ 5</div>
-                <div class="ad-price-sm">۵۰,۰۰۰,۰۰ تومان</div>
-                <div class="ad-status">🟢 منتشر شده • ۲ بازدید</div>
-            </div>
-            <i class="fa-solid fa-ellipsis-vertical" style="color: var(--gray); cursor: pointer; align-self: center;"></i>
-        </div>
+        <div class="ad-list-item"><div class="ad-thumb"></div><div class="ad-details"><div class="ad-title">پژو 206 تیپ 5</div><div class="ad-price-sm">۵۰,۰۰,۰۰ تومان</div><div class="ad-status">🟢 منتشر شده • ۲ بازدید</div></div><i class="fa-solid fa-ellipsis-vertical" style="color: var(--gray); cursor: pointer; align-self: center;"></i></div>
     </div>
 
-    <!-- ================= BOTTOM NAVIGATION ================= -->
+    <!-- BOTTOM NAV -->
     <div class="bottom-nav">
-        <div class="nav-item active" onclick="goHome()">
-            <i class="fa-solid fa-house"></i>
-            <span>خانه</span>
-        </div>
-        <div class="nav-item">
-            <i class="fa-solid fa-layer-group"></i>
-            <span>دسته‌بندی</span>
-        </div>
-        <div class="nav-add-btn" onclick="showForm()">
-            <i class="fa-solid fa-plus"></i>
-        </div>
-        <div class="nav-item" onclick="showChat()">
-            <i class="fa-solid fa-comment-dots"></i>
-            <span>پیام‌ها</span>
-        </div>
-        <div class="nav-item" onclick="showProfile()">
-            <i class="fa-solid fa-user"></i>
-            <span>پروفایل</span>
-        </div>
+        <div class="nav-item active" onclick="goHome()"><i class="fa-solid fa-house"></i><span>خانه</span></div>
+        <div class="nav-item"><i class="fa-solid fa-layer-group"></i><span>دسته‌بندی</span></div>
+        <div class="nav-add-btn" onclick="showForm()"><i class="fa-solid fa-plus"></i></div>
+        <div class="nav-item" onclick="showChat()"><i class="fa-solid fa-comment-dots"></i><span>پیام‌ها</span></div>
+        <div class="nav-item" onclick="showProfile()"><i class="fa-solid fa-user"></i><span>پروفایل</span></div>
     </div>
 </div>
 
@@ -495,32 +194,20 @@
     function showScreen(screenId) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById(screenId).classList.add('active');
-        
         const navItems = document.querySelectorAll('.nav-item');
         navItems.forEach(n => n.classList.remove('active'));
-        
-        const map = {
-            'page-home': 0,
-            'page-chat': 3,
-            'page-profile': 4
-        };
-        
-        if(map[screenId] !== undefined) {
-            navItems[map[screenId]].classList.add('active');
-        }
+        const map = { 'page-home': 0, 'page-chat': 3, 'page-profile': 4 };
+        if(map[screenId] !== undefined) navItems[map[screenId]].classList.add('active');
     }
-
     function goHome() { showScreen('page-home'); }
     function goToDetail() { showScreen('page-detail'); }
     function showForm() { showScreen('page-form'); }
     function showChat() { showScreen('page-chat'); }
     function showProfile() { showScreen('page-profile'); }
-
     function selectRadio(el) {
         el.parentElement.querySelectorAll('.radio-option').forEach(r => r.classList.remove('selected'));
         el.classList.add('selected');
     }
 </script>
-
 </body>
 </html>
